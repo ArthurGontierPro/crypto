@@ -120,15 +120,15 @@ function ark(s,r)
 end
 function encrypt(s,k)
     ek = KeyExpantion(k)
-    for i in 1:11
-        if i>1
+    for r in 1:11
+        if r>1
             s = sb(s)
             s = sr(s)
-            if i<11 
+            if r<11 
                 s = mc(s) 
             end
         end
-        s = ark(s,ek[i])
+        s = ark(s,ek[r])
     end
     return s
 end
@@ -145,115 +145,4 @@ prints(encrypt(s,k))
 
 #=
 TUTO : https://www.davidwong.fr/blockbreakers/square_2_attack4rounds.html
-
-t = hex2bytes(b"000102030405060708090a0b0c0d0e0f")
-b = hex2bytes(b"d6aa74fdd2af72fadaa678f1d6ab76fe")
-t = [t[1:4],t[5:8],t[9:12],t[13:16]]
-b = [b[1:4],b[5:8],b[9:12],b[13:16]]
-prints(t)
-t = sb(t)
-prints(t)
-t = sr(t)
-prints(t)
-t = mc(t)
-prints(t)
-t = ark(t,b)
-prints(t)
-
-
-
-
-
-
-x = [ 0x00, 0x01, 0xff, 0xaa]
-
-function oldRotWorld(x)
-    return [x[2],x[3],x[4],x[1]]
-end
-
-RotWorld(x)
-
-
-function btiaux(x)
-    return if x<'a' parse(Int,x)+1 elseif x=='a' 11 elseif x=='b' 12 elseif x=='c' 13 elseif x=='d' 14 elseif x=='e' 15 elseif x=='f' 16 end
-end
-function bti(x)
-    return btiaux(bytes2hex([x])[2]),btiaux(bytes2hex([x])[1])     
-end
-function alp(x)
-    return mod(x,16),div(x,16)
-end
-function pla((x,y))
-    return x+16*y-16
-end
-function oldSubWorld(x)
-    return [Sbox[pla(bti(y))] for y in x]
-end
-
-SubWorld(x)
-
-
-function Rcon(x)
-    return [rcon[x+1],0x00,0x00,0x00]
-end
-
-Rcon(1)
-
-key = hex2bytes(b"2b7e151628aed2a6abf7158809cf4f3c")
-function KeyExpantion(k)
-    t = [k[1:4], k[5:8], k[9:12], k[13:16]]
-    return t
-end
-
-
-KeyExpantion(key)
-
-function strtoint(x)
-    return if x<'a' parse(Int,x)+1 elseif x=='a' 11 elseif x=='b' 12 elseif x=='c' 13 elseif x=='d' 14 elseif x=='e' 15 elseif x=='f' 16 end
-end
-function inttobit(x)
-    s = bitstring(x)
-    n = length(s)
-    t = falses(n)
-    for i in 1:n
-        t[i]=parse(Bool,s[i])
-    end
-    return t
-end
-function hextobit(x)
-    s = bitstring(x)
-    n = length(s)
-    t = falses(8)
-    for i in 1:8
-        t[i]=parse(Bool,s[i])
-    end
-    return t
-end
-
-uitobitar(x[4])
-
-function makebitkey(x)
-    t = [x[1:4], x[5:8], x[9:12], x[13:16]]
-    k = falses(32,4)
-    for i in 1:4
-        for j in 1:4
-            s = bitstring(t[i][j])
-            for l in 1:8
-                k[j*8-8+l,i]=parse(Bool,s[l])
-            end 
-        end 
-    end
-    return k
-end
-
-function rotworld(x)
-    return vcat(x[9:end],x[1:8])
-end
-function subworld(x)
-
-
-end
-k = makebitkey(key)
-
-rotworld(k[:,4])
 =#
