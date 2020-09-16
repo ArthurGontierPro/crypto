@@ -1,3 +1,4 @@
+ch="/Users/agontier/Desktop/crypto/"
 function fixx(f,x,t)
         if t
 	        write(f,string(x," 0\n"))
@@ -48,7 +49,26 @@ function ft(f,a,b,c,d,e,t)
         write(f,string(t," ",e," ",d," ",b," ",a," 0\n"))
         write(f,string(t," ",e," ",d," ",c," ",a," 0\n"))
 end
-include("fz.jl")
+function fz(f,a)
+        open(string(ch,"fz.cnf")) do d
+	        s = readlines(d)
+	        for c in s
+                        cc=split(c," ")
+                        s=""
+                        for i in cc
+                                ii=parse(Int,i)
+                                if ii==0
+                                        s=string(s," 0\n")
+                                elseif ii<0
+                                        s=string(s," -",a[ii*(-1)])
+                                else
+                                        s=string(s," ",a[ii])
+                                end
+	                end
+                        write(f,s)
+                end
+        end
+end
 function f(f,r)
         rn=r*289
         ro=(r-1)*289
@@ -64,9 +84,7 @@ function f(f,r)
         end
 end
 
-global init=1300
-global n=init+289*2
-open("/Users/agontier/Desktop/crypto/trivium.cnf","w") do d
+open(string(ch,"trivium.cnf"),"w") do d
         #fixx(d,[i for i in 1:80],false)#K
         fixx(d,[i for i in 81:93],false)
         #fixx(d,[i for i in 94:174],false)#IV
@@ -78,9 +96,9 @@ open("/Users/agontier/Desktop/crypto/trivium.cnf","w") do d
 end
 
 
-
 #=
-~/z3/build/z3 ~/Desktop/crypto/trivium.cnf
+/Applications/Julia-1.5.app/Contents/Resources/julia/bin/julia ~/Desktop/crypto/triviumSATbrut.jl
+~/z3/build/z3 ~/Desktop/crypto/trivium.cnf > ~/Desktop/crypto/res.out
 =#
 
 
