@@ -17,40 +17,20 @@ function fixx(f,x,t)
                 end
         end
 end
+function fixz(f,z)
+        i=4*288+1
+        for b in z
+                fixx(f,i*289,b==1)
+        end
+end
 function shift(f,s)
         for x in s
                 write(f,string(x," -",x-290," 0\n"))
                 write(f,string(x-290," -",x," 0\n"))
         end
 end
-function ft(f,a,b,c,d,e,t)
-        write(f,string("-",t," -",e," -",d," -",b," -",c," ",a," 0\n"))
-        write(f,string("-",t," -",e," -",d," ",b," -",a," 0\n"))
-        write(f,string("-",t," -",e," -",d," ",c," -",a," 0\n"))
-        write(f,string("-",t," -",e," ",d," -",b," -",c," -",a," 0\n"))
-        write(f,string("-",t," -",e," ",d," ",b," ",a," 0\n"))
-        write(f,string("-",t," -",e," ",d," ",c," ",a," 0\n"))
-        write(f,string("-",t," ",e," -",d," -",b," -",c," -",a," 0\n"))
-        write(f,string("-",t," ",e," -",d," ",b," ",a," 0\n"))
-        write(f,string("-",t," ",e," -",d," ",c," ",a," 0\n"))
-        write(f,string("-",t," ",e," ",d," -",b," -",c," ",a," 0\n"))
-        write(f,string("-",t," ",e," ",d," ",b," -",a," 0\n"))
-        write(f,string("-",t," ",e," ",d," ",c," -",a," 0\n"))
-        write(f,string(t," -",e," -",d," -",b," -",c," -",a," 0\n"))
-        write(f,string(t," -",e," -",d," ",b," ",a," 0\n"))
-        write(f,string(t," -",e," -",d," ",c," ",a," 0\n"))
-        write(f,string(t," -",e," ",d," -",b," -",c," ",a," 0\n"))
-        write(f,string(t," -",e," ",d," ",b," -",a," 0\n"))
-        write(f,string(t," -",e," ",d," ",c," -",a," 0\n"))
-        write(f,string(t," ",e," -",d," -",b," -",c," ",a," 0\n"))
-        write(f,string(t," ",e," -",d," ",b," -",a," 0\n"))
-        write(f,string(t," ",e," -",d," ",c," -",a," 0\n"))
-        write(f,string(t," ",e," ",d," -",b," -",c," -",a," 0\n"))
-        write(f,string(t," ",e," ",d," ",b," ",a," 0\n"))
-        write(f,string(t," ",e," ",d," ",c," ",a," 0\n"))
-end
-function fz(f,a)
-        open(string(ch,"fz.cnf"),"r") do d
+function fcnf(f,fc,a)
+        open(string(ch,fc,".cnf"),"r") do d
 	        s = readlines(d)
 	        for c in s
                         cc=split(c," ")
@@ -72,25 +52,28 @@ end
 function f(f,r)
         rn=r*289
         ro=(r-1)*289
-        ft(f,243+ro,286+ro,287+ro,288+ro,69+ro,1+rn)
+        fcnf(f,"ft",[243+ro,286+ro,287+ro,288+ro,69+ro,1+rn])
         shift(f,[i for i in 2+rn:93+rn])
-        ft(f,66+ro,91+ro,92+ro,93+ro,171+ro,94+rn)
+        fcnf(f,"ft",[66+ro,91+ro,92+ro,93+ro,171+ro,94+rn])
         shift(f,[i for i in 95+rn:177+rn])
-        ft(f,162+ro,175+ro,176+ro,177+ro,264+ro,178+rn)
+        fcnf(f,"ft",[162+ro,175+ro,176+ro,177+ro,264+ro,178+rn])
         shift(f,[i for i in 179+rn:288+rn])
         if r>4*288
                 print(r,' ')
-                fz(f,[162+ro,175+ro,176+ro,177+ro,264+ro,66+ro,91+ro,92+ro,93+ro,171+ro,243+ro,286+ro,287+ro,288+ro,69+ro,289+rn])
+                fcnf(f,"fz",[162+ro,175+ro,176+ro,177+ro,264+ro,66+ro,91+ro,92+ro,93+ro,171+ro,243+ro,286+ro,287+ro,288+ro,69+ro,289+rn])
         end
 end
 
+function z(i) return (4*288+i)*289 end 
 function generate()
+        z=[1,1,1,1,1,0,1,1,1,1,1,0,0,0,0,0,1,0,1,1,1,1,1,1,0,0,1,0,0,1,1,0,0,1,0,1,1,0,0,0,0,1,0,1,1,0,0,1,0,0,0,0,0,1,0,1,0,0,0,1,1,0,1,1,0,1,0,1,0,0,0,1,0,1,1,1,1,0,1,0,0,0,1,0,1,1,1,0,0,1,0,0,1,1,1,0,0,0,1,0,0,0,1,1,1,0,0,1,1,1,1,1,1,1,0,0,1,0,0,1,0,1,1,1,1,1,1,1]# generated with K = 0 & IV = 0
         open(string(ch,"trivium.cnf"),"w") do d
                 fixx(d,[i for i in 1:80],true)#K
                 fixx(d,[i for i in 81:93],false)
-                fixx(d,[i for i in 94:173],true)#IV
+                fixx(d,[i for i in 94:173],false)#IV
                 fixx(d,[i for i in 174:285],false)
                 fixx(d,[i for i in 286:288],true)
+                #fixz(d,z)
                 for r in 1:(4*288+288)
                         f(d,r)
                 end
@@ -104,7 +87,7 @@ function printv(v)
         println()
 end
 function printz(i,ss)
-        println("z",i,"=",ss[(4*288+i)*289])
+        println("z",i,"=",ss[z(i)])
 end
 function prints(r,ss)
         println("r=",r)
@@ -119,13 +102,16 @@ end
 function interpret()
         open(string(ch,"res.out"),"r") do s
                 s = readlines(s)
-                ss=[parse(Int,i)>0 for i in split(s[2]," ")[1:end-1]]
-
-                for r in 288*4:288*4+288
-                        prints(r,ss)
-                end
-                for r in 0:5
-                        prints(r,ss)
+                if s[1]=="sat"
+                        ss=[parse(Int,i)>0 for i in split(s[2]," ")[1:end-1]]
+                        for r in 1:288*4+288
+                                prints(r,ss)
+                        end
+                        for r in 0:5
+                                prints(r,ss)
+                        end
+                else
+                        println("UNSAT there must be an error")
                 end
         end
 end
@@ -133,13 +119,13 @@ end
 println("Writing trivium.cnf DIMACS model")
 
 
-#generate()
+generate()
 
 
 println("\n Solving with z3")
 
 
-#run(pipeline(`/Users/agontier/z3/build/z3 /Users/agontier/Desktop/crypto/trivium.cnf`, stdout = "/Users/agontier/Desktop/crypto/res.out"))
+run(pipeline(`/Users/agontier/z3/build/z3 /Users/agontier/Desktop/crypto/trivium.cnf`, stdout = "/Users/agontier/Desktop/crypto/res.out"))
 
 
 interpret()
