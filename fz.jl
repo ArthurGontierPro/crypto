@@ -9,9 +9,9 @@ function fz(f,a)
                                 if ii==0
                                         s=string(s," 0\n")
                                 elseif ii<0
-                                        s=string(s," -",a[ii*(-1)],',')
+                                        s=string(s," -",a[ii*(-1)])
                                 else
-                                        s=string(s," ",a[ii],',')
+                                        s=string(s," ",a[ii])
                                 end
 	                end
                         write(f,s)

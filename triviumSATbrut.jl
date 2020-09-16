@@ -58,7 +58,7 @@ function f(f,r)
         shift(f,[i for i in 95+rn:177+rn])
         ft(f,162+ro,175+ro,176+ro,177+ro,264+ro,178+rn)
         shift(f,[i for i in 179+rn:288+rn])
-        #println(r,init,r>init)
+        println(r)
         if r>4*288
                 fz(f,[162+ro,175+ro,176+ro,177+ro,264+ro,66+ro,91+ro,92+ro,93+ro,171+ro,243+ro,286+ro,287+ro,288+ro,69+ro,289+rn])
         end
