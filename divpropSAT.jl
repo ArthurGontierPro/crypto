@@ -1,6 +1,3 @@
-
-
-
 function fixx(f,x,t)
         if t
 	        write(f,string(x," 0\n"))
@@ -41,4 +38,6 @@ end
 
 
 
-#~/z3/build/z3 ~/Desktop/crypto/divprop.cnf
+#=
+~/z3/build/z3 ~/Desktop/crypto/divprop.cnf
+=#
