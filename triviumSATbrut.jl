@@ -19,8 +19,8 @@ function fixx(f,x,t)
 end
 function shift(f,s)
         for x in s
-                write(f,string(x," -",x-289," 0\n"))
-                write(f,string(x-289," -",x," 0\n"))
+                write(f,string(x," -",x-290," 0\n"))
+                write(f,string(x-290," -",x," 0\n"))
         end
 end
 function ft(f,a,b,c,d,e,t)
@@ -86,10 +86,10 @@ end
 
 function generate()
         open(string(ch,"trivium.cnf"),"w") do d
-                #fixx(d,[i for i in 1:80],false)#K
+                fixx(d,[i for i in 1:80],true)#K
                 fixx(d,[i for i in 81:93],false)
-                #fixx(d,[i for i in 94:174],false)#IV
-                fixx(d,[i for i in 175:285],false)
+                fixx(d,[i for i in 94:173],true)#IV
+                fixx(d,[i for i in 174:285],false)
                 fixx(d,[i for i in 286:288],true)
                 for r in 1:(4*288+288)
                         f(d,r)
@@ -121,16 +121,27 @@ function interpret()
                 s = readlines(s)
                 ss=[parse(Int,i)>0 for i in split(s[2]," ")[1:end-1]]
 
-                for r in 1:4*288+288
+                for r in 288*4:288*4+288
+                        prints(r,ss)
+                end
+                for r in 0:5
                         prints(r,ss)
                 end
         end
 end
 
 println("Writing trivium.cnf DIMACS model")
-generate()
+
+
+#generate()
+
+
 println("\n Solving with z3")
-run(pipeline(`/Users/agontier/z3/build/z3 /Users/agontier/Desktop/crypto/trivium.cnf`, stdout = "/Users/agontier/Desktop/crypto/res.out"))
+
+
+#run(pipeline(`/Users/agontier/z3/build/z3 /Users/agontier/Desktop/crypto/trivium.cnf`, stdout = "/Users/agontier/Desktop/crypto/res.out"))
+
+
 interpret()
 
 #=
