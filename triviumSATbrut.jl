@@ -93,10 +93,10 @@ function prints(r,ss)
         println("r=",r)
         print("s1:93   =")
         printv(ss[r*289+1:r*289+93])
-        print("s94:176 =")
-        printv(ss[r*289+94:r*289+176])
-        print("s177:288=")
-        printv(ss[r*289+177:r*289+288])
+        print("s94:177 =")
+        printv(ss[r*289+94:r*289+177])
+        print("s178:288=")
+        printv(ss[r*289+178:r*289+288])
         if r>4*288 println("z",r-4*288,"=",ss[r*289+289]) end
 end
 function interpret()
@@ -135,3 +135,13 @@ interpret()
 /Users/agontier/z3/build/z3 /Users/agontier/Desktop/crypto/trivium.cnf > /Users/agontier/Desktop/crypto/res.out
 =#
 
+function verif1(a,b,c,d,e,t) return (a ⊻ (b & c) ⊻ d ⊻ e) == t end
+function verif2(a,b,c,d,e,t) return (a ⊻ (b & c) ⊻ d ⊻ e) ⊻ t ⊻ 1 end
+function verif3(a,b,c,d,e,t) return (~t|~e|~d|~b|~c|a)&(~t|~e|~d|b|~a)&(~t|~e|~d|c|~a)&(~t|~e|d|~b|~c|~a)&(~t|~e|d|b|a)&(~t|~e|d|c|a)&(~t|e|~d|~b|~c|~a)&(~t|e|~d|b|a)&(~t|e|~d|c|a)&(~t|e|d|~b|~c|a)&(~t|e|d|b|~a)&(~t|e|d|c|~a)&(t|~e|~d|~b|~c|~a)&(t|~e|~d|b|a)&(t|~e|~d|c|a)&(t|~e|d|~b|~c|a)&(t|~e|d|b|~a)&(t|~e|d|c|~a)&(t|e|~d|~b|~c|a)&(t|e|~d|b|~a)&(t|e|~d|c|~a)&(t|e|d|~b|~c|~a)&(t|e|d|b|a)&(t|e|d|c|a) end#+1
+function verif4(a,b,c,d,e,t) return (-t|-e|-d|-b|-c|-a)&(-t|-e|-d|b|a)&(-t|-e|-d|c|a)&(-t|-e|d|-b|-c|a)&(-t|-e|d|b|-a)&(-t|-e|d|c|-a)&(-t|e|-d|-b|-c|a)&(-t|e|-d|b|-a)&(-t|e|-d|c|-a)&(-t|e|d|-b|-c|-a)&(-t|e|d|b|a)&(-t|e|d|c|a)&(t|-e|-d|-b|-c|a)&(t|-e|-d|b|-a)&(t|-e|-d|c|-a)&(t|-e|d|-b|-c|-a)&(t|-e|d|b|a)&(t|-e|d|c|a)&(t|e|-d|-b|-c|-a)&(t|e|-d|b|a)&(t|e|-d|c|a)&(t|e|d|-b|-c|a)&(t|e|d|b|-a)&(t|e|d|c|-a) end
+function verif5(a,b,c,d,e,t) return ~((~t|~e|~d|~b|~c|a)&(~t|~e|~d|b|~a)&(~t|~e|~d|c|~a)&(~t|~e|d|~b|~c|~a)&(~t|~e|d|b|a)&(~t|~e|d|c|a)&(~t|e|~d|~b|~c|~a)&(~t|e|~d|b|a)&(~t|e|~d|c|a)&(~t|e|d|~b|~c|a)&(~t|e|d|b|~a)&(~t|e|d|c|~a)&(t|~e|~d|~b|~c|~a)&(t|~e|~d|b|a)&(t|~e|~d|c|a)&(t|~e|d|~b|~c|a)&(t|~e|d|b|~a)&(t|~e|d|c|~a)&(t|e|~d|~b|~c|a)&(t|e|~d|b|~a)&(t|e|~d|c|~a)&(t|e|d|~b|~c|~a)&(t|e|d|b|a)&(t|e|d|c|a)) end#neg (...+1)
+F2=[false,true]
+sum([verif1(a,b,c,d,e,t)==verif2(a,b,c,d,e,t) for t in F2, e in F2, d in F2, c in F2, b in F2, a in F2])==2^6
+sum([verif1(a,b,c,d,e,t)==verif3(a,b,c,d,e,t) for t in F2, e in F2, d in F2, c in F2, b in F2, a in F2])==2^6
+sum([verif1(a,b,c,d,e,t)==verif4(a,b,c,d,e,t) for t in F2, e in F2, d in F2, c in F2, b in F2, a in F2])==2^6
+sum([verif1(a,b,c,d,e,t)==verif5(a,b,c,d,e,t) for t in F2, e in F2, d in F2, c in F2, b in F2, a in F2])==2^6
