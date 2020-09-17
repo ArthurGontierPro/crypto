@@ -21,6 +21,7 @@ function fixz(f,z)
         i=4*288+1
         for b in z
                 fixx(f,i*289,b==1)
+                i=i+1
         end
 end
 function shift(f,s)
@@ -59,21 +60,22 @@ function f(f,r)
         fcnf(f,"ft",[162+ro,175+ro,176+ro,177+ro,264+ro,178+rn])
         shift(f,[i for i in 179+rn:288+rn])
         if r>4*288
-                print(r,' ')
-                fcnf(f,"fz",[162+ro,175+ro,176+ro,177+ro,264+ro,66+ro,91+ro,92+ro,93+ro,171+ro,243+ro,286+ro,287+ro,288+ro,69+ro,289+rn])
+                #print(r,' ')
+                fcnf(f,"fz",[1+rn,94+rn,178+rn,289+rn])
+        else
+                fixx(f,289+ro,false)
         end
 end
 
-function z(i) return (4*288+i)*289 end 
 function generate()
-        z=[1,1,1,1,1,0,1,1,1,1,1,0,0,0,0,0,1,0,1,1,1,1,1,1,0,0,1,0,0,1,1,0,0,1,0,1,1,0,0,0,0,1,0,1,1,0,0,1,0,0,0,0,0,1,0,1,0,0,0,1,1,0,1,1,0,1,0,1,0,0,0,1,0,1,1,1,1,0,1,0,0,0,1,0,1,1,1,0,0,1,0,0,1,1,1,0,0,0,1,0,0,0,1,1,1,0,0,1,1,1,1,1,1,1,0,0,1,0,0,1,0,1,1,1,1,1,1,1]# generated with K = 0 & IV = 0
+        z=[0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0]#[1,1,1,1,1,0,1,1,1,1,1,0,0,0,0,0,1,0,1,1,1,1,1,1,0,0,1,0,0,1,1,0,0,1,0,1,1,0,0,0,0,1,0,1,1,0,0,1,0,0,0,0,0,1,0,1,0,0,0,1,1,0,1,1,0,1,0,1,0,0,0,1,0,1,1,1,1,0,1,0,0,0,1,0,1,1,1,0,0,1,0,0,1,1,1,0,0,0,1,0,0,0,1,1,1,0,0,1,1,1,1,1,1,1,0,0,1,0,0,1,0,1,1,1,1,1,1,1]# generated with K = 0 & IV = 0
         open(string(ch,"trivium.cnf"),"w") do d
-                fixx(d,[i for i in 1:80],true)#K
+                #fixx(d,[i for i in 1:80],false)#K
                 fixx(d,[i for i in 81:93],false)
                 fixx(d,[i for i in 94:173],false)#IV
                 fixx(d,[i for i in 174:285],false)
                 fixx(d,[i for i in 286:288],true)
-                #fixz(d,z)
+                fixz(d,z)
                 for r in 1:(4*288+288)
                         f(d,r)
                 end
@@ -86,9 +88,11 @@ function printv(v)
         end
         println()
 end
+function z(i) return (4*288+i)*289 end 
 function printz(i,ss)
         println("z",i,"=",ss[z(i)])
 end
+function getzs(s) return [i for i in s[(4*288+1)*289:289:5*288*289]] end
 function prints(r,ss)
         println("r=",r)
         print("s1:93   =")
@@ -103,13 +107,17 @@ function interpret()
         open(string(ch,"res.out"),"r") do s
                 s = readlines(s)
                 if s[1]=="sat"
-                        ss=[parse(Int,i)>0 for i in split(s[2]," ")[1:end-1]]
+                        println(length(s[2])-length(s[2][1:end-1]))
+                        ss=[parse(Int,i)>0 for i in split(s[2][1:end-1]," ")]
                         for r in 1:288*4+288
-                                prints(r,ss)
+                                #prints(r,ss)
                         end
-                        for r in 0:5
-                                prints(r,ss)
-                        end
+                        print("\nK       =")
+                        println(ss[1:80])
+                        print("\nIV       =")
+                        println(ss[94:173])
+                        print("\nZ1:288  =")
+                        println(getzs(ss))
                 else
                         println("UNSAT there must be an error")
                 end
@@ -122,7 +130,7 @@ println("Writing trivium.cnf DIMACS model")
 generate()
 
 
-println("\n Solving with z3")
+println("\n    Solving with z3\n")
 
 
 run(pipeline(`/Users/agontier/z3/build/z3 /Users/agontier/Desktop/crypto/trivium.cnf`, stdout = "/Users/agontier/Desktop/crypto/res.out"))
@@ -140,8 +148,10 @@ function verif2(a,b,c,d,e,t) return (a ⊻ (b & c) ⊻ d ⊻ e) ⊻ t ⊻ 1 end
 function verif3(a,b,c,d,e,t) return (~t|~e|~d|~b|~c|a)&(~t|~e|~d|b|~a)&(~t|~e|~d|c|~a)&(~t|~e|d|~b|~c|~a)&(~t|~e|d|b|a)&(~t|~e|d|c|a)&(~t|e|~d|~b|~c|~a)&(~t|e|~d|b|a)&(~t|e|~d|c|a)&(~t|e|d|~b|~c|a)&(~t|e|d|b|~a)&(~t|e|d|c|~a)&(t|~e|~d|~b|~c|~a)&(t|~e|~d|b|a)&(t|~e|~d|c|a)&(t|~e|d|~b|~c|a)&(t|~e|d|b|~a)&(t|~e|d|c|~a)&(t|e|~d|~b|~c|a)&(t|e|~d|b|~a)&(t|e|~d|c|~a)&(t|e|d|~b|~c|~a)&(t|e|d|b|a)&(t|e|d|c|a) end#+1
 function verif4(a,b,c,d,e,t) return (-t|-e|-d|-b|-c|-a)&(-t|-e|-d|b|a)&(-t|-e|-d|c|a)&(-t|-e|d|-b|-c|a)&(-t|-e|d|b|-a)&(-t|-e|d|c|-a)&(-t|e|-d|-b|-c|a)&(-t|e|-d|b|-a)&(-t|e|-d|c|-a)&(-t|e|d|-b|-c|-a)&(-t|e|d|b|a)&(-t|e|d|c|a)&(t|-e|-d|-b|-c|a)&(t|-e|-d|b|-a)&(t|-e|-d|c|-a)&(t|-e|d|-b|-c|-a)&(t|-e|d|b|a)&(t|-e|d|c|a)&(t|e|-d|-b|-c|-a)&(t|e|-d|b|a)&(t|e|-d|c|a)&(t|e|d|-b|-c|a)&(t|e|d|b|-a)&(t|e|d|c|-a) end
 function verif5(a,b,c,d,e,t) return ~((~t|~e|~d|~b|~c|a)&(~t|~e|~d|b|~a)&(~t|~e|~d|c|~a)&(~t|~e|d|~b|~c|~a)&(~t|~e|d|b|a)&(~t|~e|d|c|a)&(~t|e|~d|~b|~c|~a)&(~t|e|~d|b|a)&(~t|e|~d|c|a)&(~t|e|d|~b|~c|a)&(~t|e|d|b|~a)&(~t|e|d|c|~a)&(t|~e|~d|~b|~c|~a)&(t|~e|~d|b|a)&(t|~e|~d|c|a)&(t|~e|d|~b|~c|a)&(t|~e|d|b|~a)&(t|~e|d|c|~a)&(t|e|~d|~b|~c|a)&(t|e|~d|b|~a)&(t|e|~d|c|~a)&(t|e|d|~b|~c|~a)&(t|e|d|b|a)&(t|e|d|c|a)) end#neg (...+1)
+function verif6(a,b,c,d,e,t) return (t|~e|~d|~b|~c|a)&(t|~e|~d|b|~a)&(t|~e|~d|c|~a)&(t|~e|d|~b|~c|~a)&(t|~e|d|b|a)&(t|~e|d|c|a)&(t|e|~d|~b|~c|~a)&(t|e|~d|b|a)&(t|e|~d|c|a)&(t|e|d|~b|~c|a)&(t|e|d|b|~a)&(t|e|d|c|~a)&(~t|~e|~d|~b|~c|~a)&(~t|~e|~d|b|a)&(~t|~e|~d|c|a)&(~t|~e|d|~b|~c|a)&(~t|~e|d|b|~a)&(~t|~e|d|c|~a)&(~t|e|~d|~b|~c|a)&(~t|e|~d|b|~a)&(~t|e|~d|c|~a)&(~t|e|d|~b|~c|~a)&(~t|e|d|b|a)&(~t|e|d|c|a) end# neg t ... +1
 F2=[false,true]
 sum([verif1(a,b,c,d,e,t)==verif2(a,b,c,d,e,t) for t in F2, e in F2, d in F2, c in F2, b in F2, a in F2])==2^6
 sum([verif1(a,b,c,d,e,t)==verif3(a,b,c,d,e,t) for t in F2, e in F2, d in F2, c in F2, b in F2, a in F2])==2^6
 sum([verif1(a,b,c,d,e,t)==verif4(a,b,c,d,e,t) for t in F2, e in F2, d in F2, c in F2, b in F2, a in F2])==2^6
 sum([verif1(a,b,c,d,e,t)==verif5(a,b,c,d,e,t) for t in F2, e in F2, d in F2, c in F2, b in F2, a in F2])==2^6
+sum([verif1(a,b,c,d,e,t)==verif6(a,b,c,d,e,t) for t in F2, e in F2, d in F2, c in F2, b in F2, a in F2])==2^6
