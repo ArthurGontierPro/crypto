@@ -1,4 +1,21 @@
 ch="/Users/agontier/Desktop/crypto/"
+
+
+function isat(r,i)
+        if r==0
+                return i
+        elseif i==1
+                return 289+r*4+1
+        elseif i==94
+                return 289+r*4+2
+        elseif i==178
+                return 289+r*4+3
+        elseif i==289
+                return 289+r*4+4
+        else
+                return isat(r-1,i-1)
+        end
+end
 function fixx(f,x,t)
         if t
 	        write(f,string(x," 0\n"))
@@ -18,10 +35,10 @@ function fixx(f,x,t)
         end
 end
 function fixz(f,z)
-        i=4*288+1
+        r=4*288+1
         for b in z
-                fixx(f,i*289,b==1)
-                i=i+1
+                fixx(f,isat(r,289),b==1)
+                r=r+1
         end
 end
 function shift(f,s)
@@ -51,31 +68,31 @@ function fcnf(f,fc,a)
         end
 end
 function f(f,r)
-        rn=r*289
-        ro=(r-1)*289
-        fcnf(f,"ft",[243+ro,286+ro,287+ro,288+ro,69+ro,1+rn])
-        shift(f,[i for i in 2+rn:93+rn])
-        fcnf(f,"ft",[66+ro,91+ro,92+ro,93+ro,171+ro,94+rn])
-        shift(f,[i for i in 95+rn:177+rn])
-        fcnf(f,"ft",[162+ro,175+ro,176+ro,177+ro,264+ro,178+rn])
-        shift(f,[i for i in 179+rn:288+rn])
+        #rn=r*289
+        #ro=(r-1)*289
+        fcnf(f,"ft",[isat(r-1,243),isat(r-1,286),isat(r-1,287),isat(r-1,288),isat(r-1,69),isat(r,1)])
+        #shift(f,[i for i in 2+rn:93+rn])
+        fcnf(f,"ft",[isat(r-1,66),isat(r-1,91),isat(r-1,92),isat(r-1,93),isat(r-1,171),isat(r,94)])
+        #shift(f,[i for i in 95+rn:177+rn])
+        fcnf(f,"ft",[isat(r-1,162),isat(r-1,175),isat(r-1,176),isat(r-1,177),isat(r-1,264),isat(r,178)])
+        #shift(f,[i for i in 179+rn:288+rn])
         if r>4*288
                 #print(r,' ')
-                fcnf(f,"fz",[1+rn,94+rn,178+rn,289+rn])
+                fcnf(f,"fz",[isat(r,1),isat(r,94),isat(r,178),isat(r,289)])
         else
-                fixx(f,289+ro,false)
+                #fixx(f,isat(r-1,289),false)
         end
 end
 
 function generate()
-        z=[0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0]#[1,1,1,1,1,0,1,1,1,1,1,0,0,0,0,0,1,0,1,1,1,1,1,1,0,0,1,0,0,1,1,0,0,1,0,1,1,0,0,0,0,1,0,1,1,0,0,1,0,0,0,0,0,1,0,1,0,0,0,1,1,0,1,1,0,1,0,1,0,0,0,1,0,1,1,1,1,0,1,0,0,0,1,0,1,1,1,0,0,1,0,0,1,1,1,0,0,0,1,0,0,0,1,1,1,0,0,1,1,1,1,1,1,1,0,0,1,0,0,1,0,1,1,1,1,1,1,1]# generated with K = 0 & IV = 0
+        z=[ 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1]#[1,1,1,1,1,0,1,1,1,1,1,0,0,0,0,0,1,0,1,1,1,1,1,1,0,0,1,0,0,1,1,0,0,1,0,1,1,0,0,0,0,1,0,1,1,0,0,1,0,0,0,0,0,1,0,1,0,0,0,1,1,0,1,1,0,1,0,1,0,0,0,1,0,1,1,1,1,0,1,0,0,0,1,0,1,1,1,0,0,1,0,0,1,1,1,0,0,0,1,0,0,0,1,1,1,0,0,1,1,1,1,1,1,1,0,0,1,0,0,1,0,1,1,1,1,1,1,1]# generated with K = 0 & IV = 0
         open(string(ch,"trivium.cnf"),"w") do d
                 fixx(d,[i for i in 1:80],false)#K
                 fixx(d,[i for i in 81:93],false)
                 fixx(d,[i for i in 94:173],false)#IV
                 fixx(d,[i for i in 174:285],false)
                 fixx(d,[i for i in 286:288],true)
-                #fixz(d,z)
+                fixz(d,z)
                 for r in 1:(4*288+288)
                         f(d,r)
                 end
@@ -92,16 +109,16 @@ function z(i) return (4*288+i)*289 end
 function printz(i,ss)
         println("z",i,"=",ss[z(i)])
 end
-function getzs(s) return [i for i in s[(4*288+1)*289:289:5*288*289]] end
+function getzs(s) return [s[isat(r,289)]==1 for r in 1153:1440] end
 function prints(r,ss)
         println("r=",r)
         print("s1:93   =")
-        printv(ss[r*289+1:r*289+93])
+        printv([ss[isat(r,i)] for i in 1:93])
         print("s94:177 =")
-        printv(ss[r*289+94:r*289+177])
+        printv([ss[isat(r,i)] for i in 94:177])
         print("s178:288=")
-        printv(ss[r*289+178:r*289+288])
-        if r>4*288 println("z",r-4*288,"=",ss[r*289+289]) end
+        printv([ss[isat(r,i)] for i in 178:288])
+        if r>4*288 println("z",r-4*288,"=",ss[isat(r,289)]) end
 end
 function interpret()
         open(string(ch,"res.out"),"r") do s
@@ -110,7 +127,7 @@ function interpret()
                         println(length(s[2])-length(s[2][1:end-1]))
                         ss=[parse(Int,i)>0 for i in split(s[2][1:end-1]," ")]
                         for r in 1:288*4+288
-                                prints(r,ss)
+                                #prints(r,ss)
                         end
                         print("\nK       =")
                         printv(ss[1:80])
@@ -155,3 +172,5 @@ sum([verif1(a,b,c,d,e,t)==verif3(a,b,c,d,e,t) for t in F2, e in F2, d in F2, c i
 sum([verif1(a,b,c,d,e,t)==verif4(a,b,c,d,e,t) for t in F2, e in F2, d in F2, c in F2, b in F2, a in F2])==2^6
 sum([verif1(a,b,c,d,e,t)==verif5(a,b,c,d,e,t) for t in F2, e in F2, d in F2, c in F2, b in F2, a in F2])==2^6
 sum([verif1(a,b,c,d,e,t)==verif6(a,b,c,d,e,t) for t in F2, e in F2, d in F2, c in F2, b in F2, a in F2])==2^6
+
+#[println(r,' ',i,' ',ii(r,i)) for i in 1:288, r in 1:288:288*5+1]
