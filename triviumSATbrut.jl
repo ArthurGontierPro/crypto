@@ -1,6 +1,6 @@
 ch="/Users/agontier/Desktop/crypto/"
-global rinit = 100
-global rz = 80
+global rinit = 1152
+global rz = 288
 function isat(r,i)
         if r==0
                 return i
@@ -68,12 +68,12 @@ function fcnf(f,fc,a)
         end
 end
 function f(f,r)
-fcnf(f,"ft",[isat(r-1,243),isat(r-1,286),isat(r-1,287),isat(r-1,288),isat(r-1,69),isat(r,1)])
-fcnf(f,"ft",[isat(r-1,66),isat(r-1,91),isat(r-1,92),isat(r-1,93),isat(r-1,171),isat(r,94)])
-fcnf(f,"ft",[isat(r-1,162),isat(r-1,175),isat(r-1,176),isat(r-1,177),isat(r-1,264),isat(r,178)])
+        fcnf(f,"ft",[isat(r-1,243),isat(r-1,286),isat(r-1,287),isat(r-1,288),isat(r-1,69),isat(r,1)])
+        fcnf(f,"ft",[isat(r-1,66),isat(r-1,91),isat(r-1,92),isat(r-1,93),isat(r-1,171),isat(r,94)])
+        fcnf(f,"ft",[isat(r-1,162),isat(r-1,175),isat(r-1,176),isat(r-1,177),isat(r-1,264),isat(r,178)])
         if r>rinit
                 #print(r,' ')
-                fcnf(f,"fz",[isat(r,1),isat(r,94),isat(r,178),isat(r,289)])
+                fcnf(f,"fz",[isat(r-1,66),isat(r-1,93),isat(r-1,162),isat(r-1,177),isat(r-1,243),isat(r-1,288),isat(r,289)])
         else
                 fixx(f,isat(r,289),false)
         end
@@ -150,7 +150,9 @@ function main()
 
         println("Writing trivium.cnf without key")
         generate(false,true,z);println("\n    Solving with z3\n")
+        t=time()
         solve()
+        println("Key found in ",time()-t," seconds")
         zz=interpret()
 end
 
