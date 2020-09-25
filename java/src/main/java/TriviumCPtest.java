@@ -4,6 +4,7 @@ import org.chocosolver.solver.constraints.extension.Tuples;
 import org.chocosolver.solver.variables.BoolVar;
 
 public class TriviumCPtest {
+    public static int[] F = {0, 1};
     public static int NBROUNDS = 288;
 
     public static void main(String[] args) {
@@ -14,6 +15,8 @@ public class TriviumCPtest {
         int ii = itrivium(Nb, 7);
         X[0].eq(0).post();
         X[1].eq(1).post();
+//        for (int i = 1; i <= 80; i++) X[i].eq(1).post();//K
+
         for (int i = 2; i <= 80; i++) X[i].eq(0).post();//K
         for (int i = 81; i <= 93; i++) X[i].eq(0).post();
         // Initialization Register 2 - IV + 0
@@ -38,9 +41,10 @@ public class TriviumCPtest {
         while (solver.solve()) {
             cpt++;
             System.out.println("Solution nb" + cpt);
-            for (int r=0;r<=Nb;r++)
+            for (int r = 0; r <= Nb; r++)
                 PrintState(X, r);
         }
+        solver.findAllSolutions();
         solver.printStatistics();
     }
 
@@ -50,11 +54,11 @@ public class TriviumCPtest {
         tuples.add(0, 0, 0, 1, 0, 1);
         tuples.add(0, 0, 0, 0, 1, 1);
         tuples.add(0, 1, 1, 0, 0, 1);
-        for (int a = 0; a < 2; a++)
-            for (int b = 0; b < 2; b++)
-                for (int c = 0; c < 2; c++)
-                    for (int d = 0; d < 2; d++)
-                        for (int e = 0; e < 2; e++)
+        for (int a : F)
+            for (int b : F)
+                for (int c : F)
+                    for (int d : F)
+                        for (int e : F)
                             if (!((a == 1 && b == 0 && c == 0 && d == 0 && e == 0) || (a == 0 && b == 0 && c == 0 && d == 1 && e == 0) || (a == 0 && b == 0 && c == 0 && d == 0 && e == 1) || (a == 0 && b == 1 && c == 1 && d == 0 && e == 0)))
                                 tuples.add(a, b, c, d, e, 0);
         return tuples;
@@ -68,12 +72,12 @@ public class TriviumCPtest {
         tuples.add(0, 0, 0, 1, 0, 0, 1);
         tuples.add(0, 0, 0, 0, 1, 0, 1);
         tuples.add(0, 0, 0, 0, 0, 1, 1);
-        for (int a = 0; a < 2; a++)
-            for (int b = 0; b < 2; b++)
-                for (int c = 0; c < 2; c++)
-                    for (int d = 0; d < 2; d++)
-                        for (int e = 0; e < 2; e++)
-                            for (int f = 0; f < 2; f++)
+        for (int a : F)
+            for (int b : F)
+                for (int c : F)
+                    for (int d : F)
+                        for (int e : F)
+                            for (int f : F)
                                 if (a + b + c + d + e + f != 1)
                                     tuples.add(a, b, c, d, e, f, 0);
         return tuples;
