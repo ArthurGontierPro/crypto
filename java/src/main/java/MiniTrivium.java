@@ -13,8 +13,8 @@ public class MiniTrivium {
         BoolVar[][] X = m.boolVarMatrix(Nb + 1, 3);
 
         X[0][0].eq(1).post();
-        X[0][1].eq(0).post();
-        X[0][2].eq(0).post();
+        X[0][1].eq(1).post();
+        X[0][2].eq(1).post();
         Tuples tuplesfr = tuplesfr();
         for (int r = 1; r <= Nb; r++) {
             m.table(new BoolVar[]{X[r-1][0],X[r-1][1],X[r-1][2],X[r][0],X[r][1],X[r][2]}, tuplesfr).post();
@@ -22,16 +22,8 @@ public class MiniTrivium {
         X[Nb][0].eq(1).post();
         X[Nb][1].eq(0).post();
         X[Nb][2].eq(0).post();
-        int cpt = 0;
         Solver solver = m.getSolver();
-        while (solver.solve()) {
-            cpt++;
-//            System.out.println("Solution nb" + cpt);
-//            for (int r = 0; r <= Nb; r++)
-//                PrintState(X, r);
-        }
-//        System.out.println(cpt);
-//        solver.findAllSolutions();
+        while (solver.solve()) {}
         solver.printStatistics();
         PrintState(X, Nb);
     }
@@ -40,7 +32,7 @@ public class MiniTrivium {
         Tuples tuples = new Tuples(true);
         tuples.add(1, 0, 0, 1, 0, 0);
         tuples.add(1, 0, 0, 0, 1, 0);
-        tuples.add(0, 1, 0, 0, 1, 0);
+        tuples.add(0, 1, 0, 0, 0, 1);
         tuples.add(0, 1, 1, 1, 0, 0);
         tuples.add(1, 0, 0, 1, 1, 0);
         tuples.add(1, 1, 1, 1, 1, 0);
