@@ -38,6 +38,12 @@ public class TriviumDivPropCopy {
                 if (j != 65 && j != 90 && j != 91 && j != 92 && j != 170 && j != 161 && j != 174 && j != 175 && j != 176 && j != 263 && j != 242 && j != 285 && j != 286 && j != 287 && j != 68)
                     X[r][j + 1].eq(X[r - 1][j]).post();
         }
+        // Last state
+        for (int i = 0; i < 288; i++)
+            if (i != 65 && i != 92 && i != 161 && i != 176 && i != 242 && i != 287)
+                X[Nb][i].eq(0).post();
+        m.sum(X[Nb], "=", 1).post();
+
         Solver solver = m.getSolver();
         while (solver.solve()) {
         }
