@@ -47,6 +47,7 @@ function xortriv(f,a,y,d,e,t)
 end
 function laststate(f)
         r = Nb
+        println(Nb)
         fixx(f,[r*ends+i for i in 1:288 if i != 66 && i != 93 && i != 162 && i != 177 && i != 243 && i != 288],false)
         write(f,string(r*ends+66," ",r*ends+93," ",r*ends+162," ",r*ends+177," ",r*ends+243," ",r*ends+288," 0\n"))
         write(f,string("-",r*ends+66," -",r*ends+93," 0\n"))
@@ -76,11 +77,10 @@ function f(f,r,t,copy)
                 copyt(f,(r-1)*ends+t[i],(r-1)*ends+copy[i],r*ends+t[i]+1)
         end
         and(f,(r-1)*ends+copy[4],(r-1)*ends+copy[2],(r-1)*ends+copy[3])
-        xortriv(f,(r-1)*ends+copy[1],(r-1)*ends+copy[4],(r-1)*ends+t[4]+1,(r-1)*ends+copy[5],r*ends+t[6])
+        xortriv(f,(r-1)*ends+copy[1],(r-1)*ends+copy[4],(r-1)*ends+t[4],(r-1)*ends+copy[5],r*ends+t[6])
 end
 function generate()
         open(string(ch,"trivium.cnf"),"w") do d
-
                 # constantes à 0
                 fixx(d,[i for i in 81:93],false)
                 fixx(d,[i for i in 93+81:285],false)
@@ -89,8 +89,8 @@ function generate()
                 fixx(d,93+34,false)
                 fixx(d,93+47,false)
                 # Monome clé (test papier 441 p16)
-                fixx(d,[i for i in 1:80 if i!= 12],false)
-                fixx(d,12,true)
+                #fixx(d,[i for i in 1:80 if i!= 12],false)
+                #fixx(d,12,true)
                 # Last state
                 laststate(d)
                 
@@ -101,7 +101,7 @@ function generate()
                         f(d,r,tt3,copy3)
                         f(d,r,tt1,copy1)
                         f(d,r,tt2,copy2)
-                        shift(d,[r*ends+j for j in 1:288 if j != 66 && j != 91 && j != 92 && j != 93 && j != 171 && j != 162 && j != 175 && j != 176 && j != 177 && j != 264 && j != 243 && j != 286 && j != 287 && j != 288 && j != 69])
+                        shift(d,[r*ends+j for j in 2:288 if !(j-1 in tt1[1:end-1]) && !(j-1 in tt2[1:end-1]) && !(j-1 in tt3[1:end-1]) && !(j in [1,94,178])]) 
                 end
         end
 end
