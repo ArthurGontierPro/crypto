@@ -47,7 +47,6 @@ function xortriv(f,a,y,d,e,t)
 end
 function laststate(f)
         r = Nb
-        println(Nb)
         fixx(f,[r*ends+i for i in 1:288 if i != 66 && i != 93 && i != 162 && i != 177 && i != 243 && i != 288],false)
         write(f,string(r*ends+66," ",r*ends+93," ",r*ends+162," ",r*ends+177," ",r*ends+243," ",r*ends+288," 0\n"))
         write(f,string("-",r*ends+66," -",r*ends+93," 0\n"))
@@ -89,8 +88,8 @@ function generate()
                 fixx(d,93+34,false)
                 fixx(d,93+47,false)
                 # Monome clé (test papier 441 p16)
-                #fixx(d,[i for i in 1:80 if i!= 12],false)
-                #fixx(d,12,true)
+                fixx(d,[i for i in 1:80 if i!= 12],false)
+                fixx(d,12,true)
                 # Last state
                 laststate(d)
                 
@@ -108,11 +107,22 @@ end
 function solve()
         run(pipeline(`/Users/agontier/z3/build/z3 /Users/agontier/Desktop/crypto/trivium.cnf`, stdout = "/Users/agontier/Desktop/crypto/res.out"))
 end
+function printv(v)
+        for b in v
+                print(if b "1" else "."end)
+        end
+        println()
+end
 function interpret()
         open(string(ch,"res.out"),"r") do s
                 s = readlines(s)
                 if s[1]=="sat"
-                        println("SAT needs to count now")
+                        ss=[parse(Int,i)>0 for i in split(s[2][1:end-1]," ")]
+                        print("\nK :")
+                        printv(ss[1:80])
+                        print("\nIV:")
+                        printv(ss[94:173])
+                        println("\nThere is at least one trail for K at z",Nb," but SAT needs to count now")
                 else
                         println("UNSAT there must be an error")
                 end
