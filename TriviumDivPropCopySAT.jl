@@ -49,7 +49,7 @@ function laststate(f)
         r = Nb
         fixx(f,[r*ends+i for i in 1:288 if i != 66 && i != 93 && i != 162 && i != 177 && i != 243 && i != 288],false)
         write(f,string(r*ends+66," ",r*ends+93," ",r*ends+162," ",r*ends+177," ",r*ends+243," ",r*ends+288," 0\n"))
-        write(f,string("-",r*ends+66," -",r*ends+93," 0\n"))
+        write(f,string("-",r*ends+66," -"m.retrieveBoolVars(),r*ends+93," 0\n"))
         write(f,string("-",r*ends+66," -",r*ends+162," 0\n"))
         write(f,string("-",r*ends+66," -",r*ends+177," 0\n"))
         write(f,string("-",r*ends+66," -",r*ends+243," 0\n"))
@@ -104,14 +104,23 @@ function generate()
                 end
         end
 end
-function solve()
+function solvez3()
+        println("\n    Solving with z3\n")
         run(pipeline(`/Users/agontier/z3/build/z3 /Users/agontier/Desktop/crypto/trivium.cnf`, stdout = "/Users/agontier/Desktop/crypto/res.out"))
+end
+function solveglucose()
+        println("\n    Solving with Glucose Parallel\n")
+        run(pipeline(`/Users/agontier/Desktop/glucose-syrup-4.1/parallel/glucose-syrup /Users/agontier/Desktop/crypto/trivium.cnf`),wait=true)
+
 end
 function printv(v)
         for b in v
                 print(if b "1" else "."end)
         end
         println()
+end
+function printsoljava(ss)
+        
 end
 function interpret()
         open(string(ch,"res.out"),"r") do s
@@ -123,6 +132,7 @@ function interpret()
                         print("\nIV:")
                         printv(ss[94:173])
                         println("\nThere is at least one trail for K at z",Nb," but SAT needs to count now")
+                        printsoljava(ss)
                 else
                         println("UNSAT there must be an error")
                 end
@@ -131,9 +141,10 @@ end
 
 function main()
         println("Writing trivium.cnf DIMACS monomial propag model")
-        generate();println("\n    Solving with z3\n")
-        solve()
-        z=interpret()
+        generate()
+        @time solvez3()
+        interpret()
+        #@time solveglucose()
 end
 
 main()
